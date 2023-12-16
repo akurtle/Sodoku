@@ -1,0 +1,49 @@
+
+
+
+.title{
+    text-align: center;   
+    font-size: 5rem;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    flex-direction: column;
+}
+
+.board{
+    display:grid;
+    height: 600px;
+    width: 600px;
+    gap:2px;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    background-color: black;
+    align-self: center;
+}
+
+.block{
+    display: grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    background-color: white;
+}
+
+.grid{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    font-size: 30px;
+    cursor: default;
+    user-select: none;
+}
+
+.solveButton{
+    margin-top: 40px;
+    height: 50px;
+    width: 400px;
+    font-size: 20px;
+    align-self: center;
+}
