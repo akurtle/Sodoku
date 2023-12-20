@@ -20,7 +20,7 @@ let randomGameArray=[
 
 
 
-let randGame = Math.floor(Math.random()*(randomGameArray.length-1))
+let randGame = Math.floor(Math.random()*(randomGameArray.length))
 
 //Newgame boolean
 let newGame=true;
