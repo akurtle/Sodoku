@@ -51,6 +51,7 @@ function parseSudokuString(sudokuString) {
   
     return sudokuGrid;
   }
+
 mainArray= parseSudokuString(randomGameArray[randGame][0])
 let sudokuGrid=parseSudokuString(randomGameArray[randGame][0])
 
@@ -126,16 +127,37 @@ random.addEventListener("click",()=>{
 const check= document.querySelector(".checkButton");
 
 check.addEventListener("click",()=>{
-    let temp=""
+    let checker = true
     let solved = parseSudokuString(randomGameArray[randGame][1])
     grids.forEach((grid)=>{
         if(solved.length!=0){
-            grid.textContent=solved[grid.dataset.block][grid.dataset.col]
+            if(grid.textContent==solved[grid.dataset.block][grid.dataset.col] && mainArray[grid.dataset.block][grid.dataset.col]==0){
+                grid.style.backgroundColor="LightGreen"
+                setTimeout(()=>{
+                    grid.style.backgroundColor=""
+                },2000)
+                
+            }
+            else if(grid.textContent!=solved[grid.dataset.block][grid.dataset.col] && mainArray[grid.dataset.block][grid.dataset.col]==0 && grid.textContent!=0){
+                grid.style.backgroundColor="red"
+                setTimeout(()=>{
+                    grid.style.backgroundColor=""
+                },2000)
+                checker=false
+            }
+            else if(grid.textContent==0){
+                grid.style.backgroundColor="beige"
+                setTimeout(()=>{
+                    grid.style.backgroundColor=""
+                },2000)
+            }
             
         }
     })
-    if(temp==randomGameArray[randGame][1]){
-        console.log("nice")
+
+    if(checker===true){
+        console.log("You have finishe the game!")
     }
+
 })
 
