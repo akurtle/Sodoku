@@ -33,10 +33,6 @@ let subArray=[];
 
 let checkArray=[];
 
-
-//It was initially filling up each block first but according to the csv sudoku files I had to store them in 
-//a line first instead of filling up each block so this below part idk why it works or how it works but it
-//works (will need to discuss it to make it cleaner ig)
 function parseSudokuString(sudokuString) {
     let sudokuArray = sudokuString.split("")
     let sudokuGrid = [];
