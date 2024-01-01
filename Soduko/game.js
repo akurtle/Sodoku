@@ -161,3 +161,8 @@ check.addEventListener("click",()=>{
 
 })
 
+
+const solve = document.querySelector(".solveButton");
+solve.addEventListener("click", ()=>{
+    solve_ai.solveSudoku(grids);
+})
