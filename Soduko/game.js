@@ -129,7 +129,7 @@ check.addEventListener("click",()=>{
     let temp=""
     let solved = parseSudokuString(randomGameArray[randGame][1])
     grids.forEach((grid)=>{
-        if(grid.textContent==0 && solved.length!=0){
+        if(solved.length!=0){
             grid.textContent=solved[grid.dataset.block][grid.dataset.col]
             
         }
