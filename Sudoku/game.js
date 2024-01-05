@@ -54,7 +54,7 @@ function parseSudokuString(sudokuString) {
 
 mainArray= parseSudokuString(randomGameArray[randGame][0])
 let sudokuGrid=parseSudokuString(randomGameArray[randGame][0])
-
+console.log(sudokuGrid);
 //Handles the click and updates the values of the grid
 function handleInput(event) {
     newGame=false;
@@ -132,7 +132,8 @@ check.addEventListener("click",()=>{
     grids.forEach((grid)=>{
         if(solved.length!=0){
             if(grid.textContent==solved[grid.dataset.block][grid.dataset.col] && mainArray[grid.dataset.block][grid.dataset.col]==0){
-                grid.style.backgroundColor="LightGreen"
+                // grid.style.backgroundColor="LightGreen"
+                grid.style.backgroundColor="Green"
                 setTimeout(()=>{
                     grid.style.backgroundColor=""
                 },2000)
@@ -164,5 +165,82 @@ check.addEventListener("click",()=>{
 
 const solve = document.querySelector(".solveButton");
 solve.addEventListener("click", ()=>{
-    solve_ai.solveSudoku(grids);
+    let fitnessScore = 0;
+    let pop_size = 100;
+    let solve_speed = 1;
+    let population = generateInitPopulation(pop_size);
+    this.updateBoard(population);
+    // solve loop
+    function solveStepByStep() {
+        if (fitnessScore < 500) {
+            // Warning: function solveSudoku(population, grids, pop_size, elite_ratio, random_ratio, mutation_chance) {
+            population = solveSudoku(population, grids, pop_size, 0.3, 0.1, 1.0);
+            fitnessScore = getBestFitness(population);
+            if(this.checkGame() == -1){return;};
+            this.updateBoard(population);
+            console.log("iteration");
+            setTimeout(solveStepByStep, solve_speed); // Delay for one/100 second
+        }
+    }
+    solveStepByStep();
+
+    // // run four times for debugging purposes
+    //     for(let i = 0; i < 10; i++){
+    //         console.log("prev: ", population);
+    //         population = solveSudoku(population, grids, pop_size, 0.2, 0.1);
+    //         console.log("after: ", population);
+    //         fitnessScore = getBestFitness(population);
+    //         if(this.checkGame() == -1){return;};
+    //         this.updateBoard(population);
+    //         console.log("currFitness: ", fitnessScore );
+    //     }
+
+
 })
+
+// Given a population(which holds gene objects), updates the board
+function updateBoard(population){
+    let best_gene = getBestGene(population);
+    for(let i = 0; i < grids.length; i++){
+        grids[i].textContent = best_gene.gene[i];
+    }
+}
+
+// Used to constantly update board color in loop of solveButton.
+function checkGame() {
+    let checker = true;
+    let solved = parseSudokuString(randomGameArray[randGame][1]);
+
+    grids.forEach((grid) => {
+        if (solved.length != 0) {
+            if (grid.dataset.fixed === "true"){grid.style.backgroundColor = "LightGray";}
+            if (
+                grid.textContent == solved[grid.dataset.block][grid.dataset.col] &&
+                mainArray[grid.dataset.block][grid.dataset.col] == 0
+            ) {
+                grid.style.backgroundColor = "LightGreen";
+
+            } else if (
+                grid.textContent != solved[grid.dataset.block][grid.dataset.col] &&
+                mainArray[grid.dataset.block][grid.dataset.col] == 0 &&
+                grid.textContent != 0
+            ) {
+                grid.style.backgroundColor = "red";
+                checker = false;
+            } else if (grid.textContent == 0) {
+                grid.style.backgroundColor = "beige";
+            }
+        }
+    });
+
+    if (checker === true) {
+        grids.forEach((grid)=>{
+            grid.style.backgroundColor = "LightYellow";
+            setTimeout(() => {
+                grid.style.backgroundColor = "";
+            }, 1500);
+        })
+        return -1;
+
+    }
+}
